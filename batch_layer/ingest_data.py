@@ -42,7 +42,7 @@ get_driver()
 def get_laps():
     laps = requests.get("https://api.openf1.org/v1/laps?session_key=9161")
     laps_json = json.loads(laps.text)
-    print(laps_json)
+    #print(laps_json)
 
     with open("data/raw/laps.csv",mode="w",newline="") as csvfile:
         csv_writer = csv. writer(csvfile)
@@ -56,6 +56,26 @@ def get_laps():
     print("sucessfully loaded data")
 
 get_laps()
+
+
+def get_sessions():
+    sessions = requests.get("https://api.openf1.org/v1/sessions?country_name=Belgium&session_name=Sprint&year=2023")
+    sessions_json = json.loads(sessions.text)
+
+    with open("data/raw/sessions.csv",mode="w",newline="") as csvfile:
+        csv_writer = csv. writer(csvfile)
+
+        if sessions_json and isinstance(sessions_json, list):
+            header = sessions_json[0].keys()
+            csv_writer.writerow(header)
+
+            for row in sessions_json:
+                csv_writer.writerow(row.values())
+    print("sucessfully loaded data")
+
+get_sessions()
+
+
 
 
 
